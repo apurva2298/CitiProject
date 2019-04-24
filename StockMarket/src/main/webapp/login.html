@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" type="text/css" href="fonts/iconic/css/material-design-iconic-font.min.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript">
+            var app = angular.module("LogIn", []);
+         
+            //Controller Part
+            app.controller("LogInController", function($scope, $http,$window) {
+         
+                $scope.logInForm = {
+                    username : "",
+                    password : ""
+                };
+         
+                $scope.submitLogIn = function() {
+                	
+                    $http({
+                        method : "POST",
+                        url : 'rest/login',
+                        data : angular.toJson($scope.logInForm),
+                        headers : {
+                            'Content-Type' : 'application/json'
+                        }
+                    }).then( _success, _error );  
+                };
+                
+                
+                function _success(response) {
+                	if(response.data==1)
+                		{
+                	
+                	alert("Successful");
+                	var unameId=document.getElementById('userId').value;
+                	
+                	window.location.replace('http://localhost:8082/StockMarket/dashboard.html'+'#'+unameId);
+                	
+                		}else
+                	{
+                			//alert("Please enter valid username or password!");
+                			alert("invalid");
+                			 _clearFormData();
+                	}
+                   
+                }
+         
+                function _error(response) {
+                	//alert("Please enter valid username or password!");
+                    console.log(response.statusText);
+                }
+         
+                //Clear the form
+                function _clearFormData() {
+                    $scope.logInForm.username = "";
+                    $scope.logInForm.password = "";
+                
+                };
+                
+            });
+</script>
+
+<style>
+
+body{
+
+background-size : 100%;
+background-image: url("bg-05.jpg");
+	padding-top: 30px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    padding-left: 70px;
+color:grey;
+}
+
+
+h1
+{
+ color:steelblue;
+
+}
+h4
+{
+ color:black;
+}
+form {
+    border: 2px solid steelblue;
+    background-color: #f6f6f6;
+    padding: 20px;
+      width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  
+  
+
+ input[type=text], input[type=password] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+button {
+      background-color:steelblue;
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+    }
+
+button:hover {
+     background-color: rgb(114, 32, 190);
+}
+
+.container {
+    padding: 2px;
+}
+div.border11 {
+
+  border: 2px #5C8C2B;
+ padding-top: 1px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+    padding-left: 20px;
+
+
+background: #f4f6f6;
+
+}
+
+</style>
+</head>
+<body ng-app="LogIn" ng-controller="LogInController">
+<br>
+<br>
+<br>
+<br>
+<center><form ng-submit="submitLogIn()">
+<br>
+   <h1> LOGIN</h1>
+  <div class="container">
+    
+  
+
+ <h4>   Username <input type="text" id="userId" placeholder="Enter Username" name="uname" required ng-model="logInForm.username">
+    
+    <br>
+    Password&nbsp<input type="password" placeholder="Enter Password" name="psw" background-color=blue required ng-model="logInForm.password">
+        
+</h4>
+
+    <button type="submit"><b>LOGIN</b></button>
+    <label><br>
+      
+<br>
+    </label>
+    </p>
+  </div>
+</center>
+</form>
+
+</body>
+</html>
